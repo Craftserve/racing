@@ -7,6 +7,8 @@ import com.github.hornta.race.enums.RespawnType;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.*;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -235,6 +237,17 @@ public class RacePlayerSession {
     Racing.debug("Attempting to spawn vehicle of type %s at %s", type, spawnLocation);
     vehicle = startLocation.getWorld().spawnEntity(spawnLocation, type);
     Racing.debug("Spawned vehicle at " + vehicle.getLocation());
+
+    if (vehicle instanceof LivingEntity) {
+      LivingEntity livingEntity = (LivingEntity) vehicle;
+      AttributeInstance attribute = livingEntity.getAttribute(Attribute.GENERIC_MAX_HEALTH);
+
+      if (attribute != null) {
+        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "Max-Health", 1_000_000D, AttributeModifier.Operation.ADD_NUMBER);
+        attribute.addModifier(modifier);
+        livingEntity.setHealth(attribute.getValue());
+      }
+    }
   }
 
   private void setupPig() {
