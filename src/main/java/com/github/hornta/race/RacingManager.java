@@ -3,6 +3,7 @@ package com.github.hornta.race;
 import com.github.hornta.race.api.RacingAPI;
 import com.github.hornta.race.enums.*;
 import com.github.hornta.race.events.*;
+import com.github.hornta.race.MessageKey;
 import com.github.hornta.carbon.message.MessageManager;
 import com.github.hornta.race.objects.*;
 import io.papermc.lib.PaperLib;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -204,7 +206,7 @@ public class RacingManager implements Listener {
   void onRaceSessionStop(RaceSessionStopEvent event) {
     raceSessions.remove(event.getRaceSession());
 
-    if (Racing.getInstance().getConfiguration().<Boolean>get(ConfigKey.TELEPORT_AFTER_RACE_ENABLED)) {
+    if (Racing.getInstance().getConfiguration().get(ConfigKey.TELEPORT_AFTER_RACE_ENABLED)) {
       TeleportAfterRaceWhen when = Racing.getInstance().getConfiguration()
           .get(ConfigKey.TELEPORT_AFTER_RACE_ENABLED_WHEN);
       if (when == TeleportAfterRaceWhen.EVERYONE_FINISHES) {
@@ -301,7 +303,7 @@ public class RacingManager implements Listener {
 
   @EventHandler
   void onRacePlayerGoal(RacePlayerGoalEvent event) {
-    if (Racing.getInstance().getConfiguration().<Boolean>get(ConfigKey.TELEPORT_AFTER_RACE_ENABLED)) {
+    if (Racing.getInstance().getConfiguration().get(ConfigKey.TELEPORT_AFTER_RACE_ENABLED)) {
       TeleportAfterRaceWhen when = Racing.getInstance().getConfiguration()
           .get(ConfigKey.TELEPORT_AFTER_RACE_ENABLED_WHEN);
       if (when == TeleportAfterRaceWhen.PARTICIPANT_FINISHES) {
@@ -472,7 +474,7 @@ public class RacingManager implements Listener {
     }
 
     boolean startOnSign = Racing.getInstance().getConfiguration().get(ConfigKey.START_ON_JOIN_SIGN);
-    boolean startOnCommand = Racing.getInstance().getConfiguration().get(ConfigKey.START_ON_JOIN_COMMAND);
+    boolean startOnCommand = Racing.getInstance().getConfiguration().get(ConfigKey.START_ON_JOIN_SIGN);
 
     if (session == null && ((type == JoinType.SIGN && startOnSign) || (type == JoinType.COMMAND && startOnCommand))) {
       StartRaceStatus status = tryStartRace(race.getName(), player, laps);

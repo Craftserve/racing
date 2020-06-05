@@ -1,7 +1,8 @@
 package com.github.hornta.race.objects;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
+
+import java.time.Duration;
 import java.util.UUID;
 
 public class RacePlayerStatistic {
@@ -9,20 +10,18 @@ public class RacePlayerStatistic {
   private String playerName;
   private int wins;
   private int runs;
-  private long fastestLap;
-  private Map<Integer, Long> records = new HashMap<>();
+  private long time;
 
-  public RacePlayerStatistic(UUID playerId, String playerName, int wins, int runs, long fastestLap, Map<Integer, Long> records) {
+  public RacePlayerStatistic(UUID playerId, String playerName, int wins, int runs, long time) {
     this.playerId = playerId;
     this.playerName = playerName;
     this.wins = wins;
     this.runs = runs;
-    this.fastestLap = fastestLap;
-    this.records = records;
+    this.time = time;
   }
 
   public RacePlayerStatistic clone() {
-    return new RacePlayerStatistic(playerId, playerName, wins, runs, fastestLap, records);
+    return new RacePlayerStatistic(playerId, playerName, wins, runs, time);
   }
 
   public UUID getPlayerId() {
@@ -33,8 +32,8 @@ public class RacePlayerStatistic {
     return playerName;
   }
 
-  public long getFastestLap() {
-    return fastestLap;
+  public long getTime() {
+    return time;
   }
 
   public int getRuns() {
@@ -45,23 +44,6 @@ public class RacePlayerStatistic {
     return wins;
   }
 
-  public long getRecord(int laps)
-  {
-    if(records.containsKey(laps))
-    {
-      return ((Number)records.get(laps)).longValue();
-    }
-    else
-    {
-      return Long.MAX_VALUE;
-    }
-  }
-
-  public Map<Integer, Long> getRecords()
-  {
-    return records;
-  }
-
   public void setPlayerName(String playerName) {
     this.playerName = playerName;
   }
@@ -70,19 +52,11 @@ public class RacePlayerStatistic {
     this.runs = runs;
   }
 
-  public void setFastestLap(long time) {
-    this.fastestLap = time;
+  public void setTime(long time) {
+    this.time = time;
   }
 
   public void setWins(int wins) {
     this.wins = wins;
-  }
-
-  public void setRecord(int laps, long time)
-  {
-    if((records.containsKey(laps) && ((Number)records.get(laps)).longValue() > time) || !records.containsKey(laps))
-    {
-      records.put(laps, time);
-    }
   }
 }
