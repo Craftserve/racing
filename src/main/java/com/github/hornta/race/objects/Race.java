@@ -4,8 +4,6 @@ import com.github.hornta.race.enums.RaceStatType;
 import com.github.hornta.race.enums.RaceState;
 import com.github.hornta.race.enums.RaceType;
 import com.github.hornta.race.enums.RaceVersion;
-import com.github.hornta.race.enums.StartOrder;
-
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
 import org.bukkit.potion.PotionEffectType;
@@ -23,7 +21,6 @@ public class Race implements Listener {
   private RaceState state;
   private Instant createdAt;
   private RaceType type;
-  private StartOrder startOrder;
   private String song;
   private double entryFee;
   private float walkSpeed;
@@ -48,7 +45,6 @@ public class Race implements Listener {
     List<RaceCheckpoint> checkpoints,
     List<RaceStartPoint> startPoints,
     RaceType type,
-    StartOrder startOrder,
     String song,
     double entryFee,
     float walkSpeed,
@@ -70,7 +66,6 @@ public class Race implements Listener {
     this.checkpoints = new ArrayList<>(checkpoints);
     this.startPoints = new ArrayList<>(startPoints);
     this.type = type;
-    this.startOrder = startOrder;
     this.song = song;
     this.entryFee = entryFee;
     this.walkSpeed = walkSpeed;
@@ -307,14 +302,6 @@ public class Race implements Listener {
 
   public void setState(RaceState state) {
     this.state = state;
-  }
-
-  public StartOrder getStartOrder() {
-    return this.startOrder;
-  }
-
-  public void setStartOrder(StartOrder order) {
-    this.startOrder = order;
   }
 
   public Instant getCreatedAt() {

@@ -6,7 +6,6 @@ import com.github.hornta.race.Util;
 import com.github.hornta.race.enums.RaceState;
 import com.github.hornta.race.enums.RaceType;
 import com.github.hornta.race.enums.RaceVersion;
-import com.github.hornta.race.enums.StartOrder;
 import com.github.hornta.race.MessageKey;
 import com.github.hornta.carbon.message.MessageManager;
 import com.github.hornta.race.objects.Race;
@@ -37,7 +36,6 @@ public class CommandCreateRace extends RacingCommand implements ICommandHandler 
       Collections.emptyList(),
       Collections.emptyList(),
       RaceType.PLAYER,
-      StartOrder.RANDOM,
       null,
       0,
       0.2F,
