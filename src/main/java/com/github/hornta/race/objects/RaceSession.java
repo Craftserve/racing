@@ -23,11 +23,14 @@ import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
@@ -645,17 +648,49 @@ public class RaceSession implements Listener {
     }
   }
 
+  // km start - don't combust participants and their vehicles
+  @EventHandler
+  void onEntityCombust(EntityCombustEvent event) {
+    Entity entity = event.getEntity();
+
+    if(entity instanceof Player && isCurrentlyRacing((Player) entity)) {
+      event.setCancelled(true);
+    } else if(entity instanceof Vehicle) {
+      for (Entity passenger : entity.getPassengers()) {
+        if(passenger instanceof Player && isCurrentlyRacing((Player) passenger)) {
+          event.setCancelled(true);
+          break;
+        }
+      }
+    }
+  }
+  // km stop
+
   @EventHandler
   void onEntityDamage(EntityDamageEvent event) {
-    if(!(event.getEntity() instanceof Player)) {
+    // km start - cancel damage on vehicles
+    Entity entity = event.getEntity();
+
+    if(!(entity instanceof Player)) {
+      if(entity instanceof Vehicle) {
+        for (Entity passenger : entity.getPassengers()) {
+          if(passenger instanceof Player && isCurrentlyRacing((Player) passenger)) {
+            event.setDamage(.1D);
+            break;
+          }
+        }
+      }
       return;
     }
+    // km stop
 
     Player player = (Player) event.getEntity();
 
     if(!isCurrentlyRacing(player)) {
       return;
     }
+
+    event.setDamage(.1D); // km - cancel
 
     if(event.getFinalDamage() >= player.getHealth()) {
       RespawnType respawnType = getRespawnDeathType(race.getType());

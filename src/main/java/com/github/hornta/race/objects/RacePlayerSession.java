@@ -153,8 +153,10 @@ public class RacePlayerSession {
     }
 
     if(vehicle != null) {
-      vehicle.setInvulnerable(true);
-      Racing.debug("Making vehicle invulnerable");
+      // km start - don't make vehicles invulnerable
+      //vehicle.setInvulnerable(true);
+      //Racing.debug("Making vehicle invulnerable");
+      // km stop
     }
 
     Bukkit.getScheduler().scheduleSyncDelayedTask(Racing.getInstance(), () -> {
